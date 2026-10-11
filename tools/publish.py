@@ -27,10 +27,14 @@ FILES = [
     "README.md", ".gitignore",
 ]
 
-def api(method, path, body=None, file_path=None, message=None):
+def api(method, path, body=None, file_path=None, message=None, sha=None, full=False):
     cmd = ["python3", GHAPI, method, path]
+    if full:
+        cmd.append("--no-truncate")
     if file_path:
         cmd += ["--file", file_path, "--message", message or f"add {file_path}"]
+        if sha:
+            cmd += ["--sha", sha]
     elif body is not None:
         cmd += [json.dumps(body, ensure_ascii=False)]
     r = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
@@ -39,10 +43,21 @@ def api(method, path, body=None, file_path=None, message=None):
     payload = {}
     if len(lines) > 1:
         try:
-            payload = json.loads(lines[1])  # ghapi 截断长响应,解析失败则忽略
+            payload = json.loads(lines[1])  # ghapi 默认截断长响应,解析失败则忽略
         except json.JSONDecodeError:
             payload = {"_truncated": True}
     return status, payload
+
+def get_sha(f):
+    s, r = api("GET", f"/repos/{OWNER}/{REPO}/contents/{f}?ref=main", full=True)
+    if s == 200 and isinstance(r, dict) and r.get("sha"):
+        return r["sha"]
+    return None
+
+def put_file(f, p):
+    sha = get_sha(f)
+    return api("PUT", f"/repos/{OWNER}/{REPO}/contents/{f}",
+               file_path=p, message=f"site: {f}", sha=sha)
 
 def main():
     dry = "--dry-run" in sys.argv
@@ -72,8 +87,10 @@ def main():
         if dry:
             print(f"  [dry] {f}")
             continue
-        s, r = api("PUT", f"/repos/{OWNER}/{REPO}/contents/{f}",
-                   file_path=p, message=f"site: {f}")
+        s, r = put_file(f, p)
+        if s == 404 and f.startswith(".github/workflows/"):
+            print(f"  跳过 {f}: 凭证缺少 workflow 权限 (404)，后续可手动添加")
+            continue
         if s not in (200, 201):
             sys.exit(f"推送失败 {f}: {s} {r}")
         print(f"  已推送 {f}")
