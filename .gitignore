@@ -1,0 +1,6 @@
+# 抓取缓存(可再生,不入库)
+tools/.cache/
+# 原始抓取 JSON(可再生;入库的是 data/*.json 成品)
+data/raw/
+# 系统文件
+.DS_Store
