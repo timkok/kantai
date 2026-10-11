@@ -1,0 +1,130 @@
+{
+ "product": "kantai",
+ "season": 2025,
+ "league": "CSL",
+ "generated_at": "2026-10-11T20:45:43+00:00",
+ "data_as_of": "2026-10-11",
+ "pipeline": "tools/fetch_tm.py + tools/build_data.py",
+ "sources": [
+  {
+   "name": "Transfermarkt 单场报告",
+   "type": "第三方",
+   "url": "https://www.transfermarkt.com",
+   "provides": "逐场观众数/球场/日期",
+   "accessed": "2026-10-11"
+  },
+  {
+   "name": "维基百科 2025 Chinese Super League",
+   "type": "第三方汇总",
+   "url": "https://en.wikipedia.org/wiki/2025_Chinese_Super_League",
+   "provides": "分队赛季总人次/球场标称容量/逐轮排名",
+   "accessed": "2026-10-11"
+  }
+ ],
+ "coverage": {
+  "matches_total": 240,
+  "matches_with_attendance": 240,
+  "missing_ids": [],
+  "total_attendance": 6180990,
+  "avg_attendance": 25754
+ },
+ "crosscheck": {
+  "per_team_tm_sum_vs_wiki": {
+   "beijing-guoan": {
+    "tm_sum": 674627,
+    "wiki_total": 674627,
+    "diff": 0
+   },
+   "changchun-yatai": {
+    "tm_sum": 165366,
+    "wiki_total": 165366,
+    "diff": 0
+   },
+   "chengdu-rongcheng": {
+    "tm_sum": 612299,
+    "wiki_total": 612299,
+    "diff": 0
+   },
+   "dalian-yingbo": {
+    "tm_sum": 874020,
+    "wiki_total": 874020,
+    "diff": 0
+   },
+   "henan": {
+    "tm_sum": 249685,
+    "wiki_total": 249685,
+    "diff": 0
+   },
+   "meizhou-hakka": {
+    "tm_sum": 188864,
+    "wiki_total": 188864,
+    "diff": 0
+   },
+   "qingdao-hainiu": {
+    "tm_sum": 337567,
+    "wiki_total": 337567,
+    "diff": 0
+   },
+   "qingdao-west-coast": {
+    "tm_sum": 214465,
+    "wiki_total": 214465,
+    "diff": 0
+   },
+   "shandong-taishan": {
+    "tm_sum": 417951,
+    "wiki_total": 417951,
+    "diff": 0
+   },
+   "shanghai-port": {
+    "tm_sum": 290697,
+    "wiki_total": 290697,
+    "diff": 0
+   },
+   "shanghai-shenhua": {
+    "tm_sum": 562575,
+    "wiki_total": 562575,
+    "diff": 0
+   },
+   "shenzhen-peng-city": {
+    "tm_sum": 352880,
+    "wiki_total": 352880,
+    "diff": 0
+   },
+   "tianjin-jinmen-tiger": {
+    "tm_sum": 376456,
+    "wiki_total": 376456,
+    "diff": 0
+   },
+   "wuhan-three-towns": {
+    "tm_sum": 148207,
+    "wiki_total": 148207,
+    "diff": 0
+   },
+   "yunnan-yukun": {
+    "tm_sum": 332630,
+    "wiki_total": 332630,
+    "diff": 0
+   },
+   "zhejiang": {
+    "tm_sum": 382701,
+    "wiki_total": 382701,
+    "diff": 0
+   }
+  },
+  "mismatches": {},
+  "note": "Transfermarkt 逐场加总与维基分队汇总完全一致"
+ },
+ "definitions": {
+  "nominal_share": "到场人数 ÷ 球场标称容量,页面称“标称容量占比”",
+  "open_seat_rate": "到场人数 ÷ 本场实际开放座位数；开放座位数未知时不计算",
+  "attendance": "Transfermarkt 单场报告的 Attendance 数字（第三方，非官方）"
+ },
+ "derby_note": "德比标签为人工整理（上海/京津/青岛/齐鲁德比），见 tools/build_data.py DERBIES",
+ "failures": [],
+ "changelog": [
+  {
+   "date": "2026-10-11",
+   "event": "首版数据：2025 中超 240 场 + 广州豹 2025 中甲 15 个主场，上线"
+  }
+ ]
+}
